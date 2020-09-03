@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=2]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 306.0
+margin_top = 284.0
+margin_right = 422.0
+margin_bottom = 324.0
+text = "Reset"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WinModal" type="AcceptDialog" parent="."]
+visible = true
+margin_left = 133.0
+margin_top = 126.0
+margin_right = 314.0
+margin_bottom = 198.0
+popup_exclusive = true
+window_title = "Game Over, Insect..."
+dialog_text = "You win! Try Again?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxEmpty" type="Label" parent="."]
+margin_left = 32.0
+margin_top = 21.0
+margin_right = 105.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxIce" type="Label" parent="."]
+margin_left = 30.5
+margin_top = 56.0
+margin_right = 107.5
+margin_bottom = 90.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="button_up" from="Button" to="." method="_on_Button_button_up"]
+[connection signal="confirmed" from="WinModal" to="." method="_on_WinModal_confirmed"]

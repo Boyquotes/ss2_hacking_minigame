@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+var type = \"\"
+var grid_x = 0
+var grid_y = 0
+signal revealed 
+var opened = false
+var connected = 0 
+
+func disable():
+	$Rect.color = Color.gray
+	$Frame.color=Color.gray
+	$Button.disabled = true
+	self.visible = false
+	
+	
+func ice_reveal():
+	$Rect.color = Color.orangered
+	$Frame.color = Color.orangered
+	
+func success_reveal():
+	$Rect.color = Color.cyan
+	$Frame.color = Color.cyan
+	
+func fail_reveal():
+	$Rect.color = Color.black
+	$Frame.color = Color.darkgreen
+
+func debug():
+	$debug.visible = true
+	$debug.text = str(grid_x)+','+str(grid_y)
+	
+func init(t,x,y):
+	$Rect.color = Color.darkgreen
+	$Frame.color = Color.darkgreen
+	grid_x = x
+	grid_y = y
+	self.position += Vector2(x*50, y*50)
+	match t:
+		0:
+			type = 'disabled'
+			disable()
+		1:
+			type = 'fail'
+		2:
+			type = 'success'
+		3:
+			type = 'ice'
+			$Frame.color=Color.orangered
+	
+	
+	
+		
+
+func _on_Button_button_up():
+	match type:
+		'ice':
+			ice_reveal()
+		'success':
+			success_reveal()
+		'fail':
+			fail_reveal()
+		'disabled':
+			return
+	$Button.disabled = true
+	opened = true
+	emit_signal('revealed',type,grid_x,grid_y)
+"
+
+[node name="Node" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Frame" type="ColorRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 0.0196078, 0.760784, 0.0666667, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacing" type="ColorRect" parent="."]
+margin_left = 2.0
+margin_top = 3.0
+margin_right = 38.0
+margin_bottom = 38.0
+color = Color( 0.0470588, 0.00392157, 0.00392157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rect" type="ColorRect" parent="."]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 34.0
+margin_bottom = 35.0
+color = Color( 0.0470588, 0.419608, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="ToolButton" parent="."]
+margin_top = -0.25
+margin_right = 40.0
+margin_bottom = 39.75
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="debug" type="Label" parent="."]
+visible = false
+margin_left = 10.0
+margin_top = 12.0
+margin_right = 32.0
+margin_bottom = 28.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="button_up" from="Button" to="." method="_on_Button_button_up"]
